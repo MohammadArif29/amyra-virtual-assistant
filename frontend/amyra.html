@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Amyra AI</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .chat-container {
+            position: relative;
+            z-index: 1;
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            height: 90vh;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-header .logo {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .chat-header .logo i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .chat-header .title {
+            color: white;
+        }
+
+        .chat-header .title h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .chat-header .title p {
+            font-size: 0.9rem;
+            margin: 0;
+            opacity: 0.7;
+        }
+
+        .profile-button {
+            margin-left: auto;
+        }
+
+        .profile-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.2);
+        }
+
+        .profile-btn i {
+            font-size: 1.2rem;
+        }
+
+        .profile-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            margin-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message-content {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            line-height: 1.5;
+            font-size: 1rem;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .message.user .message-content {
+            background: rgba(255, 51, 102, 0.2);
+        }
+
+        .input-area {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mic-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-button i {
+            font-size: 1.5rem;
+        }
+
+        .mic-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+.typing-animation {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+    letter-spacing: 0.15em;
+    animation: typing 3s steps(40, end);
+    max-width: 100%;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+/* Remove these animations as they're no longer needed */
+/* @keyframes blink-caret { ... } */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #FF3366 }
+    100% { border-color: transparent } /* Ensure cursor is hidden at the end */
+}
+
+/* Add this new class */
+.typing-animation.completed {
+    border-right-color: transparent;
+    animation: typing 3s steps(40, end);
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #FF3366 }
+}
+
+.message.assistant .message-content {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-timestamp {
+    font-size: 0.85rem;
+    color: #bbb;
+    margin-top: 4px;
+    text-align: right;
+    opacity: 0.7;
+}
+    </style>
+</head>
+<body>
+    <div id="vanta-canvas"></div>
+    <div id="notification" class="notification"></div>
+    <div id="welcome-screen" data-aos="fade-up">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="left-section" style="display: flex; align-items: center;">
+                    <div class="logo">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="title">
+                        <h1>Amyra AI</h1>
+                        <p>Your Personal Assistant</p>
+                    </div>
+                </div>
+                
+                <!-- Replace this section in the HTML part -->
+                <div class="profile-button" style="display: flex; gap: 10px;">
+                    <button onclick="clearChat()" class="profile-btn">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button onclick="window.location.href='history.html'" class="profile-btn">
+                        <i class="fas fa-history"></i>
+                    </button>
+                    <button class="profile-btn" id="profileButton">
+                        <img id="headerProfileImage" style="display: none; width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        <i id="headerDefaultAvatar" class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message assistant">
+                    <div class="message-content">
+                        Hello! I'm Amyra, your AI assistant. How can I help you today?
+                    </div>
+                </div>
+            </div>
+            <div class="input-area">
+                <button class="mic-button" id="mic-button">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize VANTA.NET
+        VANTA.NET({
+            el: "#vanta-canvas",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xff3366,
+            backgroundColor: 0x0a0a0a,
+            points: 15.00,
+            maxDistance: 20.00,
+            spacing: 16.00,
+            showDots: true
+        });
+
+        // Make sure canvas is visible
+        document.getElementById('vanta-canvas').style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 1;
+        `;
+
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Load profile photo in header
+        async function loadHeaderProfilePhoto() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // If no token, show default avatar
+                document.getElementById('headerProfileImage').style.display = 'none';
+                document.getElementById('headerDefaultAvatar').style.display = 'flex';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new TypeError("Response was not JSON");
+                }
+
+                const data = await response.json();
+                const img = document.getElementById('headerProfileImage');
+                const defaultAvatar = document.getElementById('headerDefaultAvatar');
+                
+                if (data.success && data.user && data.user.photoUrl) {
+                    img.src = data.user.photoUrl;
+                    img.style.display = 'block';
+                    defaultAvatar.style.display = 'none';
+                } else {
+                    img.style.display = 'none';
+                    defaultAvatar.style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Error loading profile photo:', error);
+                // On error, show default avatar
+                document.getElementById('headerProfileImage').style.display = 'none';
+                document.getElementById('headerDefaultAvatar').style.display = 'flex';
+            }
+        }
+
+        // Add this after the AOS initialization and before the loadHeaderProfilePhoto function
+        
+        // Load chat history when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            speak("Hello! I\'m Amyra, your AI assistant. How can I help you today?");
+            loadHeaderProfilePhoto();
+            // Removed loadChatHistory() call
+        });
+        
+        // Remove or comment out the loadChatHistory function
+        // function loadChatHistory() { ... }
+        
+        function addMessage(text, isUser = false, msgTimestamp = null) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+            const timestamp = msgTimestamp ? new Date(msgTimestamp) : new Date();
+            const formattedTime = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (isUser) {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        ${text}
+                    </div>
+                    <div class="message-timestamp">${formattedTime}</div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <div class="typing-animation">${text}</div>
+                    </div>
+                    <div class="message-timestamp">${formattedTime}</div>
+                `;
+                // Add event listener for animation end
+                const typingElement = messageDiv.querySelector('.typing-animation');
+                typingElement.addEventListener('animationend', () => {
+                    typingElement.classList.add('completed');
+                });
+            }
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            // Save to chat history
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chatHistory.push({ text, isUser, timestamp: timestamp.toISOString() });
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+        
+        // Remove clearChatHistory function as it's no longer needed
+        // function clearChatHistory() { ... }
+        
+        // Add this function after the addMessage function
+        function clearChat() {
+            const messagesDiv = document.getElementById('chat-messages');
+            // Clear all messages except the first welcome message
+            messagesDiv.innerHTML = `
+                <div class="message assistant">
+                    <div class="message-content">
+                        Hello! I'm Amyra, your AI assistant. How can I help you today?
+                    </div>
+                </div>
+            `;
+            // Speak the welcome message again
+            speak("Hello! I'm Amyra, your AI assistant. How can I help you today?");
+        }
+        
+        // Replace the clear button form with a button
+        // Initialize VANTA.NET
+        VANTA.NET({
+            el: "#vanta-canvas",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xff3366,
+            backgroundColor: 0x0a0a0a,
+            points: 15.00,
+            maxDistance: 20.00,
+            spacing: 16.00,
+            showDots: true
+        });
+
+        // Make sure canvas is visible
+        document.getElementById('vanta-canvas').style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 1;
+        `;
+
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Load profile photo in header
+        async function loadHeaderProfilePhoto() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // If no token, show default avatar
+                document.getElementById('headerProfileImage').style.display = 'none';
+                document.getElementById('headerDefaultAvatar').style.display = 'flex';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new TypeError("Response was not JSON");
+                }
+
+                const data = await response.json();
+                const img = document.getElementById('headerProfileImage');
+                const defaultAvatar = document.getElementById('headerDefaultAvatar');
+                
+                if (data.success && data.user && data.user.photoUrl) {
+                    img.src = data.user.photoUrl;
+                    img.style.display = 'block';
+                    defaultAvatar.style.display = 'none';
+                } else {
+                    img.style.display = 'none';
+                    defaultAvatar.style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Error loading profile photo:', error);
+                // On error, show default avatar
+                document.getElementById('headerProfileImage').style.display = 'none';
+                document.getElementById('headerDefaultAvatar').style.display = 'flex';
+            }
+        }
+
+        // Add this after the AOS initialization and before the loadHeaderProfilePhoto function
+        
+        // Load chat history when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            speak("Hello! I\'m Amyra, your AI assistant. How can I help you today?");
+            loadHeaderProfilePhoto();
+            // Removed loadChatHistory() call
+        });
+        
+        // Remove or comment out the loadChatHistory function
+        // function loadChatHistory() { ... }
+        // Add this after your existing functions
+        let recognition;
+                
+                // Initialize speech recognition
+                function initSpeechRecognition() {
+                    if ('webkitSpeechRecognition' in window) {
+                        recognition = new webkitSpeechRecognition();
+                        recognition.continuous = false;
+                        recognition.interimResults = false;
+                        recognition.lang = 'en-US';
+                
+                        recognition.onstart = () => {
+                            const micButton = document.getElementById('mic-button');
+                            micButton.style.background = '#FF6B6B';
+                            micButton.innerHTML = '<i class="fas fa-stop"></i>';
+                        };
+                
+                        recognition.onend = () => {
+                            const micButton = document.getElementById('mic-button');
+                            micButton.style.background = 'linear-gradient(45deg, #FF3366, #FF6B6B)';
+                            micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                        };
+                
+                        recognition.onresult = (event) => {
+                            const text = event.results[0][0].transcript;
+                            addMessage(text, true);
+                            processUserInput(text);
+                        };
+                
+                        recognition.onerror = (event) => {
+                            console.error('Speech recognition error:', event.error);
+                            const micButton = document.getElementById('mic-button');
+                            micButton.style.background = 'linear-gradient(45deg, #FF3366, #FF6B6B)';
+                            micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                        };
+                    } else {
+                        console.error('Speech recognition not supported');
+                    }
+                }
+                
+                // Add click handler for mic button
+                document.getElementById('mic-button').addEventListener('click', () => {
+                    if (!recognition) {
+                        initSpeechRecognition();
+                    }
+                    
+                    if (recognition.state === 'running') {
+                        recognition.stop();
+                    } else {
+                        recognition.start();
+                    }
+                });
+                
+                // Initialize speech recognition when page loads
+                document.addEventListener('DOMContentLoaded', () => {
+                    speak("Hello! I'm Amyra, your AI assistant. How can I help you today?");
+                    loadHeaderProfilePhoto();
+                    initSpeechRecognition();
+                });
+        
+        function addMessage(text, isUser = false) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+            
+            if (isUser) {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <div class="typing-animation">${text}</div>
+                    </div>
+                `;
+            }
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            // Save to chat history
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chatHistory.push({ text, isUser, timestamp: new Date().toISOString() });
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+
+        async function processUserInput(text) {
+            try {
+                const lowercaseInput = text.toLowerCase();
+                let reply;
+
+                // Enhanced responses with web actions
+                if (lowercaseInput.includes('open youtube')) {
+                    reply = 'Opening YouTube...';
+                    window.open('https://youtube.com/', '_blank');
+                } else if (lowercaseInput.includes('open google')) {
+                    reply = 'Opening Google...';
+                    window.open('https://google.com/', '_blank');
+                } else if (lowercaseInput.includes('open facebook')) {
+                    reply = 'Opening Facebook...';
+                    window.open('https://facebook.com/', '_blank');
+                } else if (lowercaseInput.includes('open instagram')) {
+                    reply = 'Opening Instagram...';
+                    window.open('https://instagram.com/', '_blank');
+                } else if (lowercaseInput.includes('open calculator')) {
+                    reply = 'Opening calculator...';
+                    window.open('calculator://');
+                } else if (lowercaseInput.includes('open whatsapp')) {
+                    reply = 'Opening WhatsApp...';
+                    window.open('whatsapp://');
+                } else if (lowercaseInput.includes('time')) {
+                    reply = new Date().toLocaleString(undefined, { hour: 'numeric', minute: 'numeric' });
+                } else if (lowercaseInput.includes('date')) {
+                    reply = new Date().toLocaleString(undefined, { month: 'short', day: 'numeric' });
+                } else {
+                    // Check basic responses first
+                    const responses = {
+                        'hello': wishMe(),
+                        'hi': wishMe(),
+                        'hey': wishMe(),
+                        'how are you': 'I\'m doing well, thank you! How can I assist you?',
+                        'what is your name': 'My name is Amyra, your AI assistant.',
+                        'who are you': 'I am Amyra, an AI assistant designed to help you.',
+                        'goodbye': 'Goodbye! Have a great day!',
+                        'bye': 'Bye! Take care!',
+                        'thank you': 'You\'re welcome!',
+                        'thanks': 'You\'re welcome!'
+                    };
+
+                    reply = responses[lowercaseInput] || 'Let me search that for you...';
+                    
+                    // If no matching response, search Google
+                    if (reply === 'Let me search that for you...') {
+                        window.open(`https://www.google.com/search?q=${encodeURIComponent(text)}`, '_blank');
+                    }
+                }
+
+                addMessage(reply);
+                speak(reply);
+
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('I apologize, but I encountered an error. Please try again.');
+            }
+        }
+
+        function wishMe() {
+            const hours = new Date().getHours();
+            if (hours >= 0 && hours < 12) {
+                return 'Good Morning! How can I help you?';
+            } else if (hours >= 12 && hours < 16) {
+                return 'Good Afternoon! How can I help you?';
+            } else {
+                return 'Good Evening! How can I help you?';
+            }
+        }
+
+        // Update speak function
+        function speak(text) {
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.rate = 0.9;      // Slightly slower rate for better clarity
+            speech.pitch = 1.0;
+            speech.volume = 1.0;
+            speech.lang = 'hi-GB';  // Keeping the requested language
+            
+            // Get available voices and set a compatible voice
+            const voices = window.speechSynthesis.getVoices();
+            const hindiVoice = voices.find(voice => voice.lang.includes('hi'));
+            if (hindiVoice) {
+                speech.voice = hindiVoice;
+            }
+            
+            window.speechSynthesis.cancel(); // Cancel any ongoing speech
+            
+            // Ensure voices are loaded before speaking
+            if (voices.length > 0) {
+                window.speechSynthesis.speak(speech);
+            } else {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    window.speechSynthesis.speak(speech);
+                };
+            }
+        }
+
+                // Profile button click handler
+                document.getElementById('profileButton').addEventListener('click', () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/';  // Redirect to login if no token
+                return;
+            }
+            window.location.href = 'profile.html';  // Redirect to profile page
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat History - Amyra AI</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 25px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .title h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
+        }
+
+        .history-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .chat-session {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            margin-left: auto;
+            background: rgba(255, 51, 102, 0.2);
+        }
+
+        .message.assistant {
+            margin-right: auto;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: flex-end;
+        }
+        .history-actions input[type="text"] {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            font-size: 1rem;
+            width: 220px;
+        }
+        .history-actions button {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .history-actions button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 51, 102, 0.15);
+        }
+        .message-timestamp {
+            font-size: 0.85rem;
+            color: #bbb;
+            margin-top: 4px;
+            text-align: right;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" data-aos="fade-up">
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="title">
+                    <h1>Chat History</h1>
+                </div>
+            </div>
+            <form action="/" method="GET">
+                <button type="submit" class="back-btn" id="backToChatBtn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Chat
+                </button>
+            </form>
+        </div>
+        <div class="history-actions">
+            <input type="text" id="searchInput" placeholder="Search messages...">
+            <button id="clearBtn" type="button"><i class="fas fa-trash"></i> Clear History</button>
+        </div>
+        <div class="history-container" id="history-container">
+            <!-- Chat history will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Load and display chat history
+        document.addEventListener('DOMContentLoaded', () => {
+            displayChatHistory();
+            document.getElementById('searchInput').addEventListener('input', displayChatHistory);
+            document.getElementById('clearBtn').addEventListener('click', clearHistory);
+        });
+
+        function getFilteredHistory() {
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            const search = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!search) return chatHistory;
+            return chatHistory.filter(msg => msg.text.toLowerCase().includes(search));
+        }
+
+        function displayChatHistory() {
+            const chatHistory = getFilteredHistory();
+            const historyContainer = document.getElementById('history-container');
+            historyContainer.innerHTML = '';
+            if (chatHistory.length === 0) {
+                historyContainer.innerHTML = `
+                    <div class="chat-session">
+                        <div class="session-header">
+                            <h3>No chat history available</h3>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            // Group messages by date
+            const groupedMessages = groupMessagesByDate(chatHistory);
+            Object.entries(groupedMessages).forEach(([date, messages]) => {
+                const sessionDiv = document.createElement('div');
+                sessionDiv.className = 'chat-session';
+                sessionDiv.innerHTML = `
+                    <div class="session-header">
+                        <h3>${formatDate(date)}</h3>
+                        <span>${messages.length} messages</span>
+                    </div>
+                    ${messages.map(msg => `
+                        <div class="message ${msg.isUser ? 'user' : 'assistant'}">
+                            ${msg.text}
+                            <div class="message-timestamp">${formatTime(msg.timestamp)}</div>
+                        </div>
+                    `).join('')}
+                `;
+                historyContainer.appendChild(sessionDiv);
+            });
+        }
+
+        function groupMessagesByDate(messages) {
+            return messages.reduce((groups, message) => {
+                const date = new Date(message.timestamp).toLocaleDateString();
+                if (!groups[date]) {
+                    groups[date] = [];
+                }
+                groups[date].push(message);
+                return groups;
+            }, {});
+        }
+
+        function formatDate(dateString) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        function formatTime(timestamp) {
+            if (!timestamp) return '';
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all chat history?')) {
+                localStorage.removeItem('chatHistory');
+                displayChatHistory();
+            }
+        }
+
+        // Change Back to Chat button to redirect to amyra.html
+        document.getElementById('backToChatBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'amyra.html';
+        });
+    </script>
+</body>
+</html>

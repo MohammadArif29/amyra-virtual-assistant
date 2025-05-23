@@ -1,0 +1,340 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        
+        #welcome-screen {
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Enhanced scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #FF6B6B, #FF3366);
+        }
+        #vanta-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .glass-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 30px;
+            width: 85%;
+            max-width: 380px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 2rem;
+            margin-bottom: 12px;
+            background: linear-gradient(45deg, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            color: #ffffff;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            color: #ffffff;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .button-group {
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .button-group button {
+            padding: 12px;
+            font-size: 0.95rem;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(255, 51, 102, 0.3);
+        }
+        .logo i {
+            font-size: 2.5rem;
+            color: white;
+        }
+        h1 {
+            color: #fff;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        p {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            letter-spacing: 0.5px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .form-group label {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: block;
+            opacity: 0.9;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+        .input-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        /* Remove or update these conflicting styles */
+        .input-wrapper::before {
+            display: none; /* This removes the gradient background effect */
+        }
+        
+        .input-wrapper:focus-within::before {
+            opacity: 0; /* Ensure the gradient never shows */
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: none;
+            transform: none;
+            background: rgba(255, 255, 255, 0.15); /* Slightly lighter background when focused */
+        }
+        
+        /* Remove all browser-specific styling */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.1) inset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            caret-color: #ffffff;
+        }
+        
+        /* Remove focus ring for Firefox */
+        input::-moz-focus-inner {
+            border: 0;
+        }
+        /* Remove this duplicate style block */
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4776E6;
+            box-shadow: 0 0 20px rgba(71, 118, 230, 0.1);
+            transform: translateY(-2px);
+            background: #ffffff;
+        }
+        
+        /* Keep only this style for input focus */
+        input:focus, select:focus {
+            outline: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: none;
+            transform: none;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Also remove the gradient background on focus */
+        .input-wrapper:focus-within::before {
+            opacity: 0;
+        }
+        /* Add scrolling styles */
+        body {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        #welcome-screen {
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4776E6;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8E54E9;
+        }
+        .input-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            z-index: -1;
+            border-radius: 18px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .input-wrapper:focus-within::before {
+            opacity: 1;
+        }
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 51, 102, 0.4);
+        }
+        button:hover::before {
+            left: 100%;
+        }
+        .hide {
+            animation: fadeOutUp 0.8s forwards cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes fadeOutUp {
+            to {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.9);
+            }
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 15px;
+        }
+        .toggle-forms {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .toggle-link {
+            color: #FF3366;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-link:hover {
+            color: #FF6B6B;
+            text-decoration: underline;
+        }
+
+        .active-form {
+            display: block;
+        }
+
+        form {
+            transition: all 0.3s ease;
+        }
+        .input-wrapper input {
+            outline: none;
+        }
+        
+        .input-wrapper input:focus {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+        }
+        
+        /* Remove any browser-specific focus styles */
+        .input-wrapper input:-webkit-autofill,
+        .input-wrapper input:-webkit-autofill:hover,
+        .input-wrapper input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }

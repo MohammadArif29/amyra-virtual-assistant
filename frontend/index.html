@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Amyra AI</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+</head>
+<body>
+    <div id="vanta-canvas"></div>
+    <div id="welcome-screen" data-aos="fade-up">
+        <div class="glass-container">
+            <div class="logo" data-aos="zoom-in">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h1>Welcome Back</h1>
+            <p>Login to continue your journey with Amyra</p>
+            
+            <!-- Login Form -->
+            <form action="/amyra" method="post" id="loginForm" class="active-form">
+                <div class="form-group" data-aos="fade-up" data-aos-delay="200">
+                    <label for="email">Email</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" required placeholder="Enter your email">
+                    </div>
+                </div>
+                <div class="form-group" data-aos="fade-up" data-aos-delay="300">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    </div>
+                </div>
+                <button type="submit" data-aos="fade-up" data-aos-delay="400">
+                    Login
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form action="/amyra" method="post" id="registerForm" style="display: none;">
+                <div class="form-group" data-aos="fade-up" data-aos-delay="200">
+                    <label for="regName">Full Name</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="regName" name="name" required placeholder="Enter your full name">
+                    </div>
+                </div>
+                <div class="form-group" data-aos="fade-up" data-aos-delay="300">
+                    <label for="regEmail">Email</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="regEmail" name="email" required placeholder="Enter your email">
+                    </div>
+                </div>
+                <div class="form-group" data-aos="fade-up" data-aos-delay="400">
+                    <label for="regPassword">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="regPassword" name="password" required placeholder="Create a password">
+                    </div>
+                </div>
+                <div class="form-group" data-aos="fade-up" data-aos-delay="500">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                    </div>
+                </div>
+                <button type="submit" data-aos="fade-up" data-aos-delay="600">
+                    Register
+                </button>
+            </form>
+
+            <!-- Toggle Links -->
+            <div class="toggle-forms" data-aos="fade-up" data-aos-delay="700">
+                <p id="loginToggle" style="display: none;">
+                    Already have an account? <a href="#" class="toggle-link">Login</a>
+                </p>
+                <p id="registerToggle">
+                    Don't have an account? <a href="#" class="toggle-link">Register</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="script.js"></script>
+</html>
