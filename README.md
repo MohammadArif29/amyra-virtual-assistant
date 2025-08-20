@@ -39,7 +39,6 @@ Virtual Assistant (Amyra)
    ```
 3. Create a `.env` file with:
    ```env
-   JWT_SECRET=your_jwt_secret
    MONGODB_URI=mongodb://localhost:27017/amyra_db
    ```
 4. Start the server:
