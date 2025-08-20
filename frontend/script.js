@@ -26,6 +26,9 @@ VANTA.NET({
 document.getElementById('vanta-canvas').style.opacity = '1';
 document.getElementById('vanta-canvas').style.zIndex = '0';
 
+// API Base URL (Render)
+const API_URL = "https://amyra-virtual-assistant-1.onrender.com/api";
+
 // Form toggle functionality
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
@@ -53,70 +56,63 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Handle form submissions
-    // Update the form submission handlers in your script section
-    
-    // Update the login form handler
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    // Handle login
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
         try {
-            const response = await fetch('http://localhost:5000/api/login', {
+            const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: document.getElementById('email').value,
                     password: document.getElementById('password').value
                 })
             });
-    
+
             const data = await response.json();
             if (data.success) {
                 localStorage.setItem('token', data.token);
-                window.location.href = 'amyra.html';  // Updated from start.html to amyra.html
+                window.location.href = 'amyra.html'; 
             } else {
-                alert(data.message);
+                alert(data.message || "Login failed");
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred during login');
+            alert('Error connecting to server');
         }
     });
-    
+
+    // Handle register
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.getElementById('regName').value;
         const email = document.getElementById('regEmail').value;
         const password = document.getElementById('regPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-    
+
         if (password !== confirmPassword) {
             alert('Passwords do not match');
             return;
         }
-    
+
         try {
-            const response = await fetch('http://localhost:5000/api/register', {
+            const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password })
             });
-    
+
             const data = await response.json();
             if (data.success) {
                 localStorage.setItem('token', data.token);
                 alert('Registration successful! Please login.');
                 window.location.reload();
             } else {
-                alert(data.message);
+                alert(data.message || "Registration failed");
             }
         } catch (error) {
-            alert('Error connecting to server');
             console.error('Error:', error);
+            alert('Error connecting to server');
         }
     });
 });
